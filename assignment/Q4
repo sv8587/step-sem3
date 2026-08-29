@@ -1,0 +1,34 @@
+public final class Problem4 {
+    private final double minimumSurgePercent;
+
+    public Problem4(double minimumSurgePercent) {
+        if (minimumSurgePercent < 0)
+            throw new IllegalArgumentException("Minimum surge cannot be negative");
+        this.minimumSurgePercent = minimumSurgePercent;
+    }
+
+    public final double calculateSurgeFee(double orderValue, int delayMinutes) {
+        if (orderValue < 0 || delayMinutes < 0)
+            throw new IllegalArgumentException("Order value/delay cannot be negative");
+
+        if (delayMinutes == 0) return 0.0;
+
+        int first = Math.min(delayMinutes, 5);
+        int second = Math.min(Math.max(delayMinutes - 5, 0), 10);
+        int third = Math.max(delayMinutes - 15, 0);
+
+        double tiered = orderValue * (first * 0.005
+                + second * 0.01
+                + third * 0.02);
+
+        double floor = orderValue * minimumSurgePercent / 100.0;
+        return Math.max(tiered, floor);
+    }
+
+    public static void main(String[] args) {
+        Problem4 calculator = new Problem4(1.0);
+        System.out.println("Rs " + calculator.calculateSurgeFee(500, 0));
+        System.out.println("Rs " + calculator.calculateSurgeFee(500, 1));
+        System.out.println("Rs " + calculator.calculateSurgeFee(500, 16));
+    }
+}

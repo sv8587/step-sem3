@@ -1,0 +1,34 @@
+public final class Problem4 {
+    private final double minimumPenaltyPercent;
+
+    public Problem4(double minimumPenaltyPercent) {
+        if (minimumPenaltyPercent < 0)
+            throw new IllegalArgumentException("Minimum penalty cannot be negative");
+        this.minimumPenaltyPercent = minimumPenaltyPercent;
+    }
+
+    public final double calculatePenalty(double ticketFare, int minutesLate) {
+        if (ticketFare < 0 || minutesLate < 0)
+            throw new IllegalArgumentException("Fare/minutes cannot be negative");
+
+        if (minutesLate == 0) return 0.0;
+
+        int firstTier = Math.min(minutesLate, 5);
+        int secondTier = Math.min(Math.max(minutesLate - 5, 0), 10);
+        int thirdTier = Math.max(minutesLate - 15, 0);
+
+        double penalty = ticketFare * (firstTier * 0.005
+                + secondTier * 0.01
+                + thirdTier * 0.02);
+
+        double floor = ticketFare * minimumPenaltyPercent / 100.0;
+        return Math.max(penalty, floor);
+    }
+
+    public static void main(String[] args) {
+        Problem4 calculator = new Problem4(1.0);
+        System.out.println("Rs " + calculator.calculatePenalty(1000, 0));
+        System.out.println("Rs " + calculator.calculatePenalty(1000, 1));
+        System.out.println("Rs " + calculator.calculatePenalty(1000, 16));
+    }
+}

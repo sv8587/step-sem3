@@ -1,0 +1,89 @@
+public class Problem5 {
+    static {
+        System.out.println("Multi-kitchen reconciliation initialized.");
+    }
+
+    static class DeliveryAccount {
+        String studentId;
+        double orderValue;
+
+        DeliveryAccount(String studentId, double orderValue) {
+            if (orderValue < 0)
+                throw new IllegalArgumentException("Order value cannot be negative");
+            this.studentId = studentId;
+            this.orderValue = orderValue;
+        }
+
+        DeliveryAccount(String studentId) {
+            this(studentId, 0.0);
+        }
+
+        final double calculateSurgeFee(int delayMinutes) {
+            if (delayMinutes < 0)
+                throw new IllegalArgumentException("Delay cannot be negative");
+            return orderValue * delayMinutes * 0.01;
+        }
+    }
+
+    static class Premium extends DeliveryAccount {
+        Premium(String id, double value) {
+            super(id, value);
+        }
+
+        double settle(double amount) {
+            return amount * 0.95;
+        }
+    }
+
+    static void processAccount(DeliveryAccount account, double amount, int delayMinutes) {
+        if (account == null) return;
+
+        double settledAmount = amount;
+        if (account instanceof Premium)
+            settledAmount = ((Premium) account).settle(amount);
+
+        System.out.println(account.studentId
+                + " | settled: Rs " + settledAmount
+                + " | surge fee: Rs " + account.calculateSurgeFee(delayMinutes));
+    }
+
+    static void processBatch(DeliveryAccount[] accounts, double[] amounts,
+                             int[] delayMinutesArray) {
+        if (accounts == null || amounts == null || delayMinutesArray == null)
+            throw new IllegalArgumentException("Input arrays cannot be null");
+
+        int n = Math.min(accounts.length, Math.min(amounts.length, delayMinutesArray.length));
+        int processed = 0, nulls = 0, premium = 0, regular = 0;
+        double totalFee = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (accounts[i] == null) {
+                nulls++;
+                continue;
+            }
+
+            processed++;
+            if (accounts[i] instanceof Premium) premium++;
+            else regular++;
+
+            totalFee += accounts[i].calculateSurgeFee(delayMinutesArray[i]);
+            processAccount(accounts[i], amounts[i], delayMinutesArray[i]);
+        }
+
+        System.out.println(processed + " processed | " + nulls + " null skipped"
+                + " | " + premium + " premium | " + regular
+                + " regular | grand total surge fees = Rs " + totalFee);
+    }
+
+    public static void main(String[] args) {
+        DeliveryAccount[] accounts = {
+            new Premium("STU001", 500),
+            null,
+            new DeliveryAccount("STU002", 300)
+        };
+        double[] amounts = {500, 400, 300};
+        int[] delays = {10, 5, 0};
+
+        processBatch(accounts, amounts, delays);
+    }
+}
