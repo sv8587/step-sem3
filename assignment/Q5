@@ -1,0 +1,41 @@
+public class Problem5 {
+ static class Employee {
+  private String id,name; private double salary;
+  Employee(String i,String n,double s){id=i;name=n;salary=s;}
+  double getSalary(){return salary;}
+ }
+ static class ManagerEmployee extends Employee {
+  private double bonus;
+  ManagerEmployee(String i,String n,double s,double b){super(i,n,s);bonus=b;}
+  double effectiveSalary(){return getSalary()+bonus;}
+ }
+ static class InternEmployee extends Employee {
+  private double cap;
+  InternEmployee(String i,String n,double s,double c){super(i,n,s);cap=c;}
+  double effectiveSalary(){return Math.min(getSalary(),cap);}
+ }
+ static class ParkingSlot {
+  String slotNo; int capacity,occupied;
+  ParkingSlot(String s,int c){slotNo=s;capacity=c;}
+  boolean allot(){if(occupied<capacity){occupied++;return true;}return false;}
+ }
+ static ParkingSlot findAvailable(ParkingSlot[] s){for(ParkingSlot x:s)if(x!=null&&x.occupied<x.capacity)return x;return null;}
+ static class CompanyEmployeeRecord {
+  String name,empId; Employee employee; ParkingSlot slot; static int totalRecords;
+  CompanyEmployeeRecord(String n,String i,Employee e,ParkingSlot s){name=n;empId=i;employee=e;slot=s;totalRecords++;}
+  String fullProfile(){
+   double pay=employee.getSalary();
+   if(employee instanceof ManagerEmployee)pay=((ManagerEmployee)employee).effectiveSalary();
+   else if(employee instanceof InternEmployee)pay=((InternEmployee)employee).effectiveSalary();
+   return name+" | Pay: Rs "+pay+" | Slot: "+(slot==null?"no parking assigned":slot.slotNo);
+  }
+ }
+ public static void main(String[] args){
+  ParkingSlot[] slots={new ParkingSlot("A1",1),new ParkingSlot("A2",1)};
+  ParkingSlot s1=findAvailable(slots); CompanyEmployeeRecord d=new CompanyEmployeeRecord("Divya","E01",new ManagerEmployee("E01","Divya",70000,8000),s1); if(s1!=null)s1.allot();
+  ParkingSlot s2=findAvailable(slots); CompanyEmployeeRecord k=new CompanyEmployeeRecord("Karan","E02",new Employee("E02","Karan",40000),s2); if(s2!=null)s2.allot();
+  CompanyEmployeeRecord m=new CompanyEmployeeRecord("Meera","E03",new InternEmployee("E03","Meera",12000,10000),null);
+  System.out.println(d.fullProfile());System.out.println(k.fullProfile());System.out.println(m.fullProfile());
+  System.out.println("Total records: "+CompanyEmployeeRecord.totalRecords);
+ }
+}

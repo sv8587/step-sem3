@@ -1,0 +1,17 @@
+public class Problem3 {
+ static class HostelRoom {
+  String roomNo; int beds,occupied;
+  HostelRoom(String r,int b,int o){roomNo=r;beds=b;occupied=o;}
+  void allot(String n){if(occupied<beds){occupied++;System.out.println(n+" allotted to room "+roomNo);}else System.out.println(n+" added to waiting list for room "+roomNo);}
+ }
+ public static void main(String[] args){
+  HostelRoom room214=new HostelRoom("C-214",2,0);
+  HostelRoom sameRoom=room214;
+  sameRoom.allot("Ravi");
+  System.out.println("room214 occupied: "+room214.occupied);
+  System.out.println("sameRoom == room214: "+(sameRoom==room214));
+  HostelRoom separate=new HostelRoom("C-214",2,1);
+  System.out.println("separate == room214: "+(separate==room214));
+  room214.allot("Meera"); room214.allot("Karthik");
+ }
+}

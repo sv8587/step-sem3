@@ -1,0 +1,22 @@
+public class Problem4 {
+ static class BrokenLibraryMember {
+  static String name,memberId; static int booksIssued;
+  BrokenLibraryMember(String n,String i,int b){name=n;memberId=i;booksIssued=b;}
+ }
+ static class LibraryMember {
+  String name,memberId; int booksIssued;
+  static String libraryName="SRM Central Library"; static int memberCount;
+  LibraryMember(String n,int b){name=n;booksIssued=b;memberCount++;memberId="LM-"+(1000+memberCount);}
+  void printMemberCard(){System.out.println(name+" | "+memberId+" | "+libraryName);}
+  static void printTotalMembers(){System.out.println("Total members: "+memberCount);}
+ }
+ public static void main(String[] args){
+  System.out.println("Broken version:");
+  BrokenLibraryMember a=new BrokenLibraryMember("Aditi","LM-1001",2),r=new BrokenLibraryMember("Rohan","LM-1002",3);
+  System.out.println(a.name);System.out.println(r.name);
+  // Personal fields are instance fields; static fields are shared and cause overwriting.
+  System.out.println("\nFixed version:");
+  LibraryMember x=new LibraryMember("Aditi",2),y=new LibraryMember("Rohan",3);
+  x.printMemberCard();y.printMemberCard();LibraryMember.printTotalMembers();
+ }
+}

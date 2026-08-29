@@ -1,0 +1,27 @@
+public class Problem2 {
+ static class Employee {
+  private String empId,empName; private double salary;
+  Employee(String i,String n,double s){empId=i;empName=n;salary=s;}
+  double getSalary(){return salary;}
+ }
+ static class ManagerEmployee extends Employee {
+  private double teamBonus;
+  ManagerEmployee(String i,String n,double s,double b){super(i,n,s);teamBonus=b;}
+  double effectiveSalary(){return getSalary()+teamBonus;}
+ }
+ static class InternEmployee extends Employee {
+  private double stipendCap;
+  InternEmployee(String i,String n,double s,double c){super(i,n,s);stipendCap=c;}
+  double effectiveSalary(){return Math.min(getSalary(),stipendCap);}
+ }
+ public static void main(String[] args){
+  Employee p=new Employee("E01","Ravi",40000);
+  Employee m=new ManagerEmployee("E02","Divya",70000,8000);
+  Employee in=new InternEmployee("E03","Meera",12000,10000);
+  if(p instanceof ManagerEmployee)System.out.println("Manager effective pay: Rs "+((ManagerEmployee)p).effectiveSalary());
+  else if(p instanceof InternEmployee)System.out.println("Intern effective pay: Rs "+((InternEmployee)p).effectiveSalary());
+  else System.out.println("Plain employee pay: Rs "+p.getSalary());
+  if(m instanceof ManagerEmployee)System.out.println("Manager effective pay: Rs "+((ManagerEmployee)m).effectiveSalary());
+  if(in instanceof InternEmployee)System.out.println("Intern effective pay: Rs "+((InternEmployee)in).effectiveSalary());
+ }
+}

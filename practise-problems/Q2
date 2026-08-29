@@ -1,0 +1,16 @@
+public class Problem2 {
+ static class FeeAccount {
+  private String regNo; private double totalFee,amountPaid;
+  FeeAccount(String r,double f){regNo=r;totalFee=f;}
+  void pay(double a){if(a<=0){System.out.println("Payment rejected: amount must be positive.");return;}amountPaid=Math.min(totalFee,amountPaid+a);}
+  void payInTwoInstallments(double a){if(a<=0){pay(a);return;}pay(a/2);pay(a/2);}
+  double getDue(){return totalFee-amountPaid;}
+  double effectiveDue(double p){if(p<0||p>100)return getDue();return getDue()*(1-p/100);}
+ }
+ public static void main(String[] args){
+  FeeAccount a=new FeeAccount("RA01",200000),b=new FeeAccount("RA02",180000);
+  a.payInTwoInstallments(120000);
+  System.out.println("Account A due: Rs "+a.getDue());
+  System.out.println("Account B effective due (20% scholarship): Rs "+b.effectiveDue(20));
+ }
+}
