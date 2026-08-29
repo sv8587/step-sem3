@@ -1,0 +1,56 @@
+public class Problem1 {
+    static class BusTicket {
+        private String passengerName, destination;
+        private boolean checkedIn;
+
+        BusTicket(String passengerName, String destination) {
+            if (passengerName == null || passengerName.trim().isEmpty())
+                throw new IllegalArgumentException("Invalid passenger name");
+            if (!passengerName.matches("[A-Za-z ]+"))
+                throw new IllegalArgumentException("Passenger name must contain letters and spaces");
+            if (destination == null || destination.trim().isEmpty())
+                throw new IllegalArgumentException("Invalid destination");
+            this.passengerName = passengerName.trim();
+            this.destination = destination.trim();
+        }
+
+        void markCheckedIn() {
+            if (!checkedIn) {
+                checkedIn = true;
+                System.out.println("Checked in successfully");
+            } else {
+                System.out.println("Already checked in");
+            }
+        }
+    }
+
+    static void processBatch(String[][] rawBookings) {
+        int valid = 0, rejected = 0, duplicates = 0;
+        java.util.HashSet<String> accepted = new java.util.HashSet<>();
+
+        for (String[] row : rawBookings) {
+            try {
+                BusTicket ticket = new BusTicket(row[0], row[1]);
+                String key = row[0].trim().toLowerCase() + "|" + row[1].trim().toLowerCase();
+
+                if (!accepted.add(key)) {
+                    duplicates++;
+                } else {
+                    valid++;
+                }
+            } catch (Exception e) {
+                rejected++;
+            }
+        }
+
+        System.out.println("Valid: " + valid + " | Rejected: " + rejected
+                + " | Duplicates skipped: " + duplicates);
+    }
+
+    public static void main(String[] args) {
+        processBatch(new String[][]{
+            {"Divya", "Chennai"}, {"", "Bangalore"}, {"Ravi123", "Pune"},
+            {"Divya", "Chennai"}, {" ", " "}
+        });
+    }
+}
