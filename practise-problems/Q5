@@ -1,0 +1,29 @@
+public class Problem5 {
+ static class FeeAccount {
+  private double totalFee,paid;
+  FeeAccount(double f){totalFee=f;}
+  void pay(double a){if(a<=0){System.out.println("Payment rejected.");return;}paid=Math.min(totalFee,paid+a);}
+  void payInTwoInstallments(double a){pay(a/2);pay(a/2);}
+  double getDue(){return totalFee-paid;}
+  double effectiveDue(double p){return getDue()*(1-p/100);}
+ }
+ static class HostelRoom {
+  String roomNo; int beds,occupied;
+  HostelRoom(String r,int b){roomNo=r;beds=b;}
+  boolean allot(String n){if(occupied<beds){occupied++;return true;}return false;}
+ }
+ static class SrmStudent {
+  String name,regNo; FeeAccount feeAccount; HostelRoom room; static int totalStudents;
+  SrmStudent(String n,String r,FeeAccount f,HostelRoom room){name=n;regNo=r;feeAccount=f;this.room=room;totalStudents++;}
+  String fullStatus(){return name+" | Due: Rs "+feeAccount.getDue()+" | Room: "+(room==null?"unallotted":room.roomNo);}
+ }
+ public static void main(String[] args){
+  SrmStudent r=new SrmStudent("Ravi","RA01",new FeeAccount(200000),new HostelRoom("C-214",1));
+  SrmStudent a=new SrmStudent("Anitha","RA02",new FeeAccount(180000),new HostelRoom("C-507",1));
+  SrmStudent k=new SrmStudent("Karthik","RA03",new FeeAccount(180000),new HostelRoom("C-309",1));
+  r.room.allot(r.name);a.room.allot(a.name);k.room=null;
+  r.feeAccount.payInTwoInstallments(120000);a.feeAccount.pay(-5000);k.feeAccount.pay(36000);
+  System.out.println(r.fullStatus());System.out.println(a.fullStatus());System.out.println(k.fullStatus());
+  System.out.println("Total students: "+SrmStudent.totalStudents);
+ }
+}
