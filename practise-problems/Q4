@@ -1,0 +1,22 @@
+public class F4_InstanceStaticBoundary {
+ static class BrokenSrmStudent {
+  static String name,regNo; static int attendance;
+  BrokenSrmStudent(String n,String r,int a){name=n;regNo=r;attendance=a;}
+ }
+ static class SrmStudent {
+  String name,regNo; int attendance;
+  static String university="SRM Institute of Science and Technology"; static int admissionCount;
+  SrmStudent(String n,int a){name=n;attendance=a;admissionCount++;regNo="RA231100301"+String.format("%03d",10+admissionCount);}
+  void printIdCard(){System.out.println(name+" | "+regNo+" | "+university);}
+  static void printTotalAdmissions(){System.out.println("Students admitted so far: "+admissionCount);}
+ }
+ public static void main(String[] args){
+  System.out.println("Broken version:");
+  BrokenSrmStudent r=new BrokenSrmStudent("Ravi","RA01",80),m=new BrokenSrmStudent("Meera","RA02",90);
+  System.out.println(r.name);System.out.println(m.name);
+  // Personal fields must not be static because each object needs its own values.
+  System.out.println("\nFixed version:");
+  SrmStudent s1=new SrmStudent("Ravi",82),s2=new SrmStudent("Meera",90);
+  s1.printIdCard();s2.printIdCard();SrmStudent.printTotalAdmissions();
+ }
+}
