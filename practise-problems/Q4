@@ -1,4 +1,4 @@
-public class F4_InstanceStaticBoundary {
+public class Problem5 {
  static class BrokenSrmStudent {
   static String name,regNo; static int attendance;
   BrokenSrmStudent(String n,String r,int a){name=n;regNo=r;attendance=a;}
