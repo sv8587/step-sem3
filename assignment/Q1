@@ -1,0 +1,15 @@
+public class Problem1 {
+ static class BookIssue {
+  String title,borrowerName; int daysOverdue;
+  BookIssue(String t,String b,int d){title=t;borrowerName=b;daysOverdue=d;}
+  double fineAmount(){return daysOverdue>0?daysOverdue*5.0:0.0;}
+  boolean isSeverelyOverdue(){return daysOverdue>14;}
+  // Static: totalFineCollected works on the whole array; fineAmount works on one issue.
+  static double totalFineCollected(BookIssue[] x){double t=0;for(BookIssue b:x)t+=b.fineAmount();return t;}
+ }
+ public static void main(String[] args){
+  BookIssue[] x={new BookIssue("Clean Code","Ravi",18),new BookIssue("Effective Java","Anitha",5),new BookIssue("Refactoring","Karthik",0),new BookIssue("DSA Handbook","Meera",21),new BookIssue("Design Patterns","Suresh",9)};
+  for(BookIssue b:x)System.out.println(b.title+" - "+b.daysOverdue+" days - "+(b.isSeverelyOverdue()?"Severely overdue":"OK"));
+  System.out.println("Total fine collected: Rs "+BookIssue.totalFineCollected(x));
+ }
+}
